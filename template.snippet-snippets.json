@@ -1,0 +1,35 @@
+[
+  {
+    "piyo.cpp": {
+      "prefix": "cpppiyo",
+      "body": [
+        "#include <bits/stdc++.h>\n",
+        "using namespace std;\n",
+        "\n",
+        "int main() {\n",
+        "  cout << \\\"piyoooo!!!\\\" << endl;\n",
+        "  return 0;\n",
+        "}"
+      ],
+      "description": "Template of piyo",
+      "scope": "cpp"
+    }
+  },
+  {
+    "hoge-fuga.cpp": {
+      "prefix": "cpphoge-fuga",
+      "body": [
+        "#include <bits/stdc++.h>\n",
+        "using namespace std;\n",
+        "\n",
+        "int main(){\n",
+        "  cout << 'Hello' << endl;\n",
+        "  cout << \\\"World\\\" << \\\"\\\\n\\\";\n",
+        "  return 0;\n",
+        "}"
+      ],
+      "description": "Template of hoge-fuga",
+      "scope": "cpp"
+    }
+  }
+]

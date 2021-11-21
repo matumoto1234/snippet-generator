@@ -1,0 +1,5 @@
+# Write absolute paths
+# The '/' of end is not care.
+paths: 
+  # '/home/octocat/directory'
+  - './test_dir/'
