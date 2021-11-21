@@ -16,10 +16,10 @@ def get_directory_paths_from_config() -> list(str):
         print('Can not open config.yml.')
         print(err)
     except KeyError as err:
-        print('Does not decleared \'path\' in config file')
+        print('Does not decleared \'paths\' in config file')
         print(err)
     except TypeError as err:
-        print('')
+        print('TypeError!?')
         print(err)
 
     return []
