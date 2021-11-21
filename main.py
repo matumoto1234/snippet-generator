@@ -1,11 +1,14 @@
+# coding: utf-8
+from typing import List
+import codecs
 import glob
 import yaml
 import json
 
 
-def get_directory_paths_from_config() -> list(str):
+def get_directory_paths_from_config(config_path: str) -> List[str]:
     try:
-        with open('./config.yml', 'r') as file:
+        with codecs.open(config_path, 'r', 'utf-8') as file:
             config = yaml.safe_load(file)
 
             if not config:
@@ -31,7 +34,7 @@ def trimming_back_slash(directory_path: str) -> str:
     return directory_path
 
 
-def get_file_paths(directory_paths) -> list(str):
+def get_file_paths(directory_paths) -> List[str]:
     if not directory_paths:
         print('Paths are empty or error!')
         exit(1)
@@ -52,22 +55,37 @@ def get_file_paths(directory_paths) -> list(str):
     return all_file_paths
 
 
-def transform_quote(ch: str) -> str:
-    if ch == '"':
-        return '\\"'
-    if ch == '\\':
-        return '\\\\'
-    return ch
+def get_exclude_lines(config_path: str) -> List[str]:
+    with codecs.open(config_path, 'r', 'utf-8') as file:
+        config = yaml.safe_load(file)
+        return config['excludeLines']
 
 
-def transformed_file_datas(file_path: str) -> list(str):
-    with open(file_path, 'r') as file:
+def transformed_file_datas(file_path: str, exclude_lines: List[str]) -> List[str]:
+    extention = file_path.split('.')[-1]
+    if extention == 'out' or extention == 'exe':
+        return []
+
+    with codecs.open(file_path, 'r', 'utf-8') as file:
+        print(file_path + ' is opened')
+
         datas = []
 
         lines = file.readlines()
 
         for line in lines:
-            line = ''.join(list(map(transform_quote, line)))
+
+            is_exclude = False
+            for exclude_line in exclude_lines:
+                if exclude_line in line:
+                    is_exclude = True
+
+            if(is_exclude):
+                continue
+
+            if line[-1] == '\n':
+                line = line[:-1]
+
             datas.append(line)
 
         return datas
@@ -84,37 +102,39 @@ def trimming_extention(file_name: str) -> str:
 def main():
     print('Hello! snippet-generator.')
 
-    directory_paths: list(str) = get_directory_paths_from_config()
+    config_path = './config.yml'
 
-    file_paths: list(str) = get_file_paths(directory_paths)
+    directory_paths: List[str] = get_directory_paths_from_config(config_path)
 
-    snippets = []
+    file_paths: List[str] = get_file_paths(directory_paths)
+
+    exclude_lines: List[str] = get_exclude_lines(config_path)
+
+    snippets = {}
 
     for file_path in file_paths:
-        file_datas: list(str) = transformed_file_datas(file_path)
+        file_datas: List[str] = transformed_file_datas(
+            file_path, exclude_lines)
 
         file_name: str = get_file_name(file_path)
 
         file_name_without_extention: str = trimming_extention(file_name)
 
         snippet = {
-            # ファイルの名前 example. hoge-fuga.hpp
-            file_name: {
-                # cppをつけた拡張子なしのファイルの名前 example. cpphoge-fuga
-                "prefix": "cpp" + file_name_without_extention,
-                # body
-                "body": file_datas,
-                # Template of 拡張子なしのファイルの名前 example. Template of hoge-fuga
-                "description": "Template of " + file_name_without_extention,
-                # scope example. cpp
-                "scope": "cpp"
-            },
+            # cppをつけた拡張子なしのファイルの名前 example. cpphoge-fuga
+            "prefix": "cpp" + file_name_without_extention,
+            # body
+            "body": file_datas,
+            # Template of 拡張子なしのファイルの名前 example. Template of hoge-fuga
+            "description": "Template of " + file_name_without_extention,
+            # scope example. cpp
+            "scope": "cpp"
         }
 
-        snippets.append(snippet)
+        snippets[file_name] = snippet
     # end for
 
-    with open('template.code-snippets.json', 'w') as file:
+    with codecs.open('template.code-snippets.json', 'w', 'utf-8') as file:
         file.write(json.dumps(snippets))
 
 
