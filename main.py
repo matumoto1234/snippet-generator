@@ -3,7 +3,7 @@ import yaml
 import json
 
 
-def get_directory_paths_from_config():
+def get_directory_paths_from_config() -> list(str):
     try:
         with open('./config.yml', 'r') as file:
             config = yaml.safe_load(file)
@@ -25,13 +25,13 @@ def get_directory_paths_from_config():
     return []
 
 
-def trimming_back_slash(directory_path: str):
+def trimming_back_slash(directory_path: str) -> str:
     if directory_path[-1] == '/':
         return directory_path[:-1]
     return directory_path
 
 
-def get_file_paths(directory_paths):
+def get_file_paths(directory_paths) -> list(str):
     if not directory_paths:
         print('Paths are empty or error!')
         exit(1)
@@ -52,7 +52,7 @@ def get_file_paths(directory_paths):
     return all_file_paths
 
 
-def transform_quote(ch):
+def transform_quote(ch: str) -> str:
     if ch == '"':
         return '\\"'
     if ch == '\\':
@@ -60,7 +60,7 @@ def transform_quote(ch):
     return ch
 
 
-def transformed_file_datas(file_path):
+def transformed_file_datas(file_path: str) -> list(str):
     with open(file_path, 'r') as file:
         datas = []
 
@@ -82,20 +82,20 @@ def trimming_extention(file_name: str) -> str:
 
 
 def main():
-    print('Hello!')
+    print('Hello! snippet-generator.')
 
     directory_paths: list(str) = get_directory_paths_from_config()
 
-    file_paths = get_file_paths(directory_paths)
+    file_paths: list(str) = get_file_paths(directory_paths)
 
     snippets = []
 
     for file_path in file_paths:
-        file_datas = transformed_file_datas(file_path)
+        file_datas: list(str) = transformed_file_datas(file_path)
 
-        file_name = get_file_name(file_path)
+        file_name: str = get_file_name(file_path)
 
-        file_name_without_extention = trimming_extention(file_name)
+        file_name_without_extention: str = trimming_extention(file_name)
 
         snippet = {
             # ファイルの名前 example. hoge-fuga.hpp
