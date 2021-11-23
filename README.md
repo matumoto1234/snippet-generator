@@ -12,7 +12,12 @@ vscode snippet-generator for library
 - `glob`, `yaml`, `json` などが import できる
 
 ## 使い方
-`main.py` と同じディレクトリにある `config.yml` に `paths` を追記していきます。
+`main.py` と同じディレクトリにある `config.yml` 以下の形式で設定を書きます。
+
+- paths: 文字列配列
+- excludeLines: 文字列配列
+- prefixNameCase: 'Snake' | 'Pascal' | 'Kebab' | 'Camel'
+
 
 例.  
 ```yaml
@@ -20,6 +25,11 @@ paths:
   - '/home/matumoto/library/data-strucuture'
   - '/home/matumoto/library/graph'
   - '/home/matumoto/library/math'
+
+excludeLines:
+  - '#pragma once'
+
+prefixNameCase: 'Snake'
 ```
 
 `paths` には絶対パスを指定してください。  
