@@ -1,11 +1,9 @@
 # coding: utf-8
 from typing import List
 import codecs
-import sys
 import glob
 import yaml
 import json
-import chardet
 
 
 def get_directory_paths_from_config(config_path: str) -> List[str]:
