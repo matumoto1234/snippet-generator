@@ -61,6 +61,14 @@ def get_exclude_lines(config_path: str) -> List[str]:
         return config['excludeLines']
 
 
+def get_prefix_name_case(config_path: str) -> str:
+    with codecs.open(config_path, 'r', 'utf-8') as file:
+        config = yaml.safe_load(file)
+        prefix_name_case = config['prefixNameCase']
+        assert prefix_name_case == 'Snake' or prefix_name_case == 'Camel' or prefix_name_case == 'Pascal' or prefix_name_case == 'Kebab'
+        return prefix_name_case
+
+
 def transformed_file_datas(file_path: str, exclude_lines: List[str]) -> List[str]:
     extention = file_path.split('.')[-1]
     if extention == 'out' or extention == 'exe':
@@ -99,6 +107,12 @@ def trimming_extention(file_name: str) -> str:
     return file_name.split('.')[0]
 
 
+def to_upper_only_first(s: str) -> str:
+    if not s:
+        return ''
+    return s[0].upper() + s[1:]
+
+
 def main():
     print('Hello! snippet-generator.')
 
@@ -110,6 +124,8 @@ def main():
 
     exclude_lines: List[str] = get_exclude_lines(config_path)
 
+    prefix_name_case: str = get_prefix_name_case(config_path)
+
     snippets = {}
 
     for file_path in file_paths:
@@ -120,15 +136,32 @@ def main():
 
         file_name_without_extention: str = trimming_extention(file_name)
 
+        if prefix_name_case == 'Snake':
+            file_name_without_extention = '_'.join(
+                file_name_without_extention.split('-'))
+        elif prefix_name_case == 'Kebab':
+            file_name_without_extention = file_name_without_extention
+        elif prefix_name_case == 'Pascal':
+            words = file_name_without_extention.split('-')
+            words = list(map(to_upper_only_first, words))
+            file_name_without_extention = ''.join(words)
+        elif prefix_name_case == 'Camel':
+            words = file_name_without_extention.split('-')
+            words = list(map(to_upper_only_first, words))
+            file_name_without_extention = ''.join(words)
+            file_name_without_extention[0].lower()
+        else:
+            print('prefixNameCase')
+
         snippet = {
             # cppをつけた拡張子なしのファイルの名前 example. cpphoge-fuga
-            "prefix": "cpp" + file_name_without_extention,
+            'prefix': 'cpp' + file_name_without_extention,
             # body
-            "body": file_datas,
+            'body': file_datas,
             # Template of 拡張子なしのファイルの名前 example. Template of hoge-fuga
-            "description": "Template of " + file_name_without_extention,
+            'description': 'Template of ' + file_name_without_extention,
             # scope example. cpp
-            "scope": "cpp"
+            'scope': 'cpp'
         }
 
         snippets[file_name] = snippet
