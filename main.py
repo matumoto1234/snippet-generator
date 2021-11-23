@@ -1,9 +1,11 @@
 # coding: utf-8
 from typing import List
 import codecs
+import sys
 import glob
 import yaml
 import json
+import chardet
 
 
 def get_directory_paths_from_config(config_path: str) -> List[str]:
@@ -135,7 +137,7 @@ def main():
     # end for
 
     with codecs.open('template.code-snippets.json', 'w', 'utf-8') as file:
-        file.write(json.dumps(snippets))
+        json.dump(snippets, file, indent=2, ensure_ascii=False)
 
 
 main()
