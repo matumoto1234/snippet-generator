@@ -1,4 +1,5 @@
 # coding: utf-8
+import os
 import glob
 import yaml
 import json
@@ -49,8 +50,8 @@ def get_file_paths(directory_paths) -> List[str]:
     for directory_path in directory_paths:
         file_paths = glob.glob(directory_path + '/**', recursive=True)
 
-        # remove self path. example. '/home/octocat/library/data-structure'
-        file_paths = file_paths[1:]
+        file_paths = list(map(trimming_back_slash, file_paths))
+        file_paths = list(filter(os.path.isfile, file_paths))
 
         for file_path in file_paths:
             all_file_paths.append(file_path)
@@ -208,7 +209,8 @@ def main():
 
         file_name_without_extention: str = trimming_extention(file_name)
 
-        file_name_without_extention: str = transform_name_case(file_name_without_extention, prefix_name_case)
+        file_name_without_extention: str = transform_name_case(
+            file_name_without_extention, prefix_name_case)
 
         snippet = {
             # cppをつけた拡張子なしのファイルの名前 example. cpphoge-fuga
