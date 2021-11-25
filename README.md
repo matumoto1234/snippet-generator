@@ -3,9 +3,7 @@ vscode snippet-generator for library
 
 ## sunippet-generator とは
 ライブラリからスニペットを自動で生成してくれるものです。  
-より正確には指定されたパス以下のファイルを再帰的に探索し、json形式で`template.code-snippets.json`というファイルに出力します。  
-フォーマットはされていないので、各自でフォーマットしたのちに自分のスニペットをコピペしてください。  
-生成されるスニペットの `scope` の値は `cpp` 固定になっています。
+`config.yml`により指定されたパス以下のファイルを再帰的に探索し、`template.code-snippets.json`というファイルに出力します。  
 
 ## 必要な環境
 - `pythonが使用できる`(必要なバージョンはわからない)
