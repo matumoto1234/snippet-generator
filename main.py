@@ -10,7 +10,7 @@ from typing import List
 from subprocess import PIPE
 
 
-def get_directory_paths_from_config(config_path: str) -> List[str]:
+def get_library_paths_from(config_path: str) -> List[str]:
     try:
         with codecs.open(config_path, 'r', 'utf-8') as file:
             config = yaml.safe_load(file)
@@ -189,7 +189,7 @@ def main():
 
     config_path = './config.yml'
 
-    directory_paths: List[str] = get_directory_paths_from_config(config_path)
+    directory_paths: List[str] = get_library_paths_from(config_path)
 
     file_paths: List[str] = get_file_paths(directory_paths)
 
