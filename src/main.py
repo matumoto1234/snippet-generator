@@ -1,4 +1,5 @@
 # coding: utf-8
+import sys
 import json
 import codecs
 from typing import List
@@ -35,8 +36,13 @@ def main():
 
     json_indent = config.get_json_indent()
 
-    with codecs.open('template.code-snippets.json', 'w', 'utf-8') as file:
-        json.dump(snippets, file, indent=json_indent, ensure_ascii=False)
+    try:
+        with codecs.open('template.code-snippets.json', 'w', 'utf-8') as file:
+            json.dump(snippets, file, indent=json_indent, ensure_ascii=False)
+    except Exception as e:
+        print(e)
+        print('Can not open template.code-snippets.json')
+        sys.exit(1)
 
 
 if __name__ == '__main__':
