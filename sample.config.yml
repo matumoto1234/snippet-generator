@@ -20,3 +20,5 @@ prefixNameCase: 'Snake'
 jsonIndent: 2
 
 useOjBundle: True
+
+scope: 'cpp'
