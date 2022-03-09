@@ -19,7 +19,8 @@ def make_snippets(
     exclude_extensions: List[str],
     file_paths: List[str],
     prefix_name_case: str,
-    use_oj_bundle: bool
+    use_oj_bundle: bool,
+    scope: str
 ) -> object:
 
     result_snippets = {}
@@ -50,7 +51,7 @@ def make_snippets(
             # Template of 拡張子なしのファイルの名前 example. Template of hoge-fuga
             'description': 'Template of ' + file_name_without_extension,
             # scope example. cpp
-            'scope': 'cpp'
+            'scope': scope
         }
 
         result_snippets[file_name] = snippet

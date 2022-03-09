@@ -19,6 +19,7 @@ def main():
     exclude_extensions: List[str] = config.get_exclude_extensions()
     prefix_name_case: str = config.get_prefix_name_case()
     use_oj_bundle: bool = config.get_use_oj_bundle()
+    scope: str = config.get_scope()
     
     file_paths = find_files(config.get_paths())
 
@@ -28,7 +29,8 @@ def main():
         exclude_extensions,
         file_paths,
         prefix_name_case,
-        use_oj_bundle
+        use_oj_bundle,
+        scope
     )
 
     json_indent = config.get_json_indent()

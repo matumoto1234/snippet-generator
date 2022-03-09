@@ -31,3 +31,5 @@ class Config:
     def get_use_oj_bundle(self) -> bool:
         return self._config.get('useOjBundle', False)
 
+    def get_scope(self) -> str:
+        return self._config.get('scope', '')
