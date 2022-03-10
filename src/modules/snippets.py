@@ -26,7 +26,7 @@ def make_snippets(
     result_snippets = {}
 
     for file_path in file_paths:
-        extension = file_path.split('.')[-1]
+        extension = '.' + file_path.split('.')[-1]
         if extension in exclude_extensions:
             continue
 
